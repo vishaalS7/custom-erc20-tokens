@@ -7,7 +7,7 @@ pragma solidity ^0.8.19;
 /// @notice A standard ERC20 token fully inherited from OpenZeppelin’s secure implementation
 /// @dev Inherits OpenZeppelin's ERC20, ensuring audited functionality and best practices
 
-import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import {ERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 contract ZephyraToken is ERC20 {
     constructor(uint256 _initialSupply) ERC20("Zephyra Token", "ZPH") {

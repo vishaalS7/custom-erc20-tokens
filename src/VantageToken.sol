@@ -36,4 +36,9 @@ contract VantageToken {
         s_balances[_to] += _value;
         require(balanceOf(msg.sender) + balanceOf(_to) == previousBalance, "Transfer failed");
     }
+
+    /// @notice Mints `_amount` tokens to `_to` (only for testing/demo)
+    function mint(address _to, uint256 _amount) public {
+        s_balances[_to] += _amount;
+    }
 }
