@@ -145,7 +145,7 @@ contract VantageTokenTest is Test {
 
 ## 📄 License
 
-MIT © 2025 [@0xVishh](https://github.com/0xVishh)
+MIT © 2025 [@0xVishh](https://github.com/vishaalS7)
 
 ---
 
