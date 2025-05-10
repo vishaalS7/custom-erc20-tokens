@@ -18,8 +18,8 @@ foundryup
 
 ### 2. Clone This Repository
 ```bash
-git clone https://github.com/yourusername/erc20-portfolio.git
-cd erc20-portfolio
+git clone https://github.com/vishaalS7/custom-erc20-tokens.git
+cd custom-erc20-tokens
 forge install
 ```
 
