@@ -1,67 +1,156 @@
-## Foundry
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+# ⚡ ERC20 Token Portfolio - Vantage & Zephyra
 
-Foundry consists of:
+This repository showcases two ERC20 token implementations for demonstration and portfolio purposes:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+1. **VantageToken** — A manually coded ERC20 token implementation (no external libraries).
+2. **ZephyraToken** — A standard ERC20 token using OpenZeppelin, with deployment and testing automation.
 
-## Documentation
+---
 
-https://book.getfoundry.sh/
+## 🛠️ Setup Instructions
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
+### 1. Install Foundry
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
 ```
 
-### Test
-
-```shell
-$ forge test
+### 2. Clone This Repository
+```bash
+git clone https://github.com/yourusername/erc20-portfolio.git
+cd erc20-portfolio
+forge install
 ```
 
-### Format
+---
 
-```shell
-$ forge fmt
+## 📁 Project Structure
+
+```
+erc20-portfolio/
+├── src/
+│   ├── VantageToken.sol         # Manual ERC20 implementation
+│   └── ZephyraToken.sol         # OpenZeppelin-based ERC20 token
+│
+├── test/
+│   ├── VantageTokenTest.t.sol   # Tests for VantageToken
+│   └── ZephyraTokenTest.t.sol   # Tests for ZephyraToken
+│
+├── script/
+│   └── DeployZephyra.s.sol      # Deployment script for ZephyraToken
+│
+├── foundry.toml
+└── README.md
 ```
 
-### Gas Snapshots
+---
 
-```shell
-$ forge snapshot
+## 💡 Manual ERC20 - VantageToken
+
+### Features
+- Pure Solidity implementation.
+- Functions: `name`, `symbol`, `decimals`, `totalSupply`, `balanceOf`, `transfer`.
+- `mint` included for testing/demo only.
+
+### 🔬 Run Tests
+```bash
+forge test --match-path test/VantageTokenTest.t.sol
 ```
 
-### Anvil
+---
 
-```shell
-$ anvil
+## ⚙️ OpenZeppelin ERC20 - ZephyraToken
+
+### Features
+- Inherits from OpenZeppelin’s ERC20 standard.
+- Safe and production-ready.
+- Supports script-based deployment and tests.
+
+### 🧪 Run Tests
+```bash
+forge test --match-path test/ZephyraTokenTest.t.sol
 ```
 
-### Deploy
+### 🚀 Deploy Script (Foundry)
+File: `script/DeployZephyra.s.sol`
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+import {Script} from "forge-std/Script.sol";
+import {ZephyraToken} from "../src/ZephyraToken.sol";
+
+contract DeployZephyra is Script {
+    function run() external returns (ZephyraToken) {
+        vm.startBroadcast();
+        ZephyraToken token = new ZephyraToken();
+        vm.stopBroadcast();
+        return token;
+    }
+}
 ```
 
-### Cast
-
-```shell
-$ cast <subcommand>
+### 📤 Deploy Locally or on Testnet
+```bash
+forge script script/DeployZephyra.s.sol --broadcast --rpc-url <your_rpc_url> --private-key <your_private_key>
 ```
 
-### Help
+---
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+## 🧪 Sample Test: VantageTokenTest
+
+File: `test/VantageTokenTest.t.sol`
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "forge-std/Test.sol";
+import "../src/VantageToken.sol";
+
+contract VantageTokenTest is Test {
+    VantageToken public token;
+    address alice = address(1);
+    address bob = address(2);
+
+    function setUp() public {
+        token = new VantageToken();
+        token.mint(alice, 50 ether);
+        token.mint(bob, 20 ether);
+    }
+
+    function testNameSymbol() public {
+        assertEq(token.name(), "Vantage Token");
+        assertEq(token.symbol(), "VTG");
+    }
+
+    function testTransfer() public {
+        vm.prank(alice);
+        token.transfer(bob, 10 ether);
+
+        assertEq(token.balanceOf(alice), 40 ether);
+        assertEq(token.balanceOf(bob), 30 ether);
+    }
+
+    function test_RevertWhen_TransferMoreThanBalance() public {
+        vm.prank(bob);
+        vm.expectRevert();
+        token.transfer(alice, 100 ether);
+    }
+}
 ```
-# custom-erc20-tokens
+
+---
+
+## 📄 License
+
+MIT © 2025 [@0xVishh](https://github.com/0xVishh)
+
+---
+
+## 🙌 Acknowledgements
+
+- [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts)
+- [Foundry Toolkit](https://book.getfoundry.sh/)
+- [Chainlink Smart Contract Kit](https://docs.chain.link/smart-contracts)
