@@ -69,7 +69,7 @@ contract ZephyraTest is Test {
         assertEq(zephyraToken.allowance(bob, steve), 0);
     }
 
-     function testTransferFromMoreThanAllowanceReverts() public {
+    function testTransferFromMoreThanAllowanceReverts() public {
         vm.prank(bob);
         zephyraToken.approve(steve, 10 ether);
         // steve tries to transfer 20 tokens on behalf of Bob
@@ -91,5 +91,4 @@ contract ZephyraTest is Test {
 
         assertEq(zephyraToken.allowance(bob, steve), 20 ether);
     }
-
 }
